@@ -116,136 +116,78 @@ function gameObject() {
     return teamObjects;
   }
 
-  function numPointsScored(playerName) {
-    // create convenient aliases
-    let game = gameObject();
-    let homePlayers = game.home.players;
-    let awayPlayers = game.away.players;
+// *****************************
+// HELPER FUNCTIONS
 
-    // create object with players from both rosters
-    const players = Object.assign({}, homePlayers, awayPlayers);
-
-    // iterate over top level object
-    for (let team in game) {
-      // create convenient aliases
-      let teamObj = game[team];
-      let playerObj = teamObj.players;
-      // iterate over home/away objects
-      for (let player in playerObj) {
-        // if current player's name is equal to input 
-        if (player === playerName) {
-          // return current player's points
-          return playerObj[player]['points'];
-        }
-      }
-    }
+  function homeTeam() {
+    return gameObject().home;
   }
 
-  // MAKE CORRECTIONS FROM HERE*******************************
-  function shoeSize(playerName) {
-    // create convenient alias
-    let game = gameObject();
+  function awayTeam() {
+    return gameObject().away;
+  }
 
-    // iterate over top level object
+  // function to create object with players from both teams 
+  function players() {
+    return Object.assign({}, homeTeam().players, awayTeam().players);
+  }
+
+// ******************************
+
+
+  function numPointsScored(playerInput) {
+    return players()[playerInput].points;
+  }
+
+  function shoeSize(playerInput) {
+    return players()[playerInput].shoe;
+  }
+
+  // MAKE CORRECTIONS **************
+  function teamColors(teamInput) {
+    // create convenient alias
+    const game = gameObject();
+  
+    // iterate over top-level object
     for (let team in game) {
       // create convenient alias
       let teamObj = game[team];
-      // iterate over home/away objects
-      for (let player in teamObj['players']) {
-        // if current player's name is equal to input 
-        if (player === playerName) {
-          // return current player's shoe size
-          return teamObj['players'][player]['shoe']
-        }
-      }
-    }
-  }
-
-  function teamColors(teamName) {
-    // create alias variable  
-    let game = gameObject();
-
-    // iterate over top-level object
-    for (let key in game) {
       // if current team name is equal to input
-      if (game[key]['teamName'] === teamName) {
-        return game[key]['colors'];
+      if (teamObj['teamName'] === teamInput) {
+        return teamObj['colors'];
       }
     }
   }
 
   function teamNames() {
-    // create result array
-    let arrayOfTeamNames = [];
-  
-    // create convenient alias variable  
-    let game = gameObject();
-  
-    // iterate over top-level object
-    for (let team in game) {
-      let teamName = game[team]['teamName'];
-      arrayOfTeamNames.push(teamName)
-    }
-    // return result array
-    return arrayOfTeamNames;
+    return [homeTeam().teamName, awayTeam().teamName];
   }
 
   function playerNumbers() {
-    // create result array
-    let arrayOfPlayerNumbers = [];
-  
-    // create convenient alias variable  
-    let game = gameObject();
-  
-    // iterate over top-level object
-    for (let team in game) {
-      let roster = game[team]['players'];
-      for (let player in roster) {
-        let playerObj = roster[player]
-        arrayOfPlayerNumbers.push(playerObj['number'])
-      }
-    }
-    // return result array
-    return arrayOfPlayerNumbers;
+    let playersObj = players();
+    const playersArr = Object.values(playersObj);
+    return playersArr.map(numbers => numbers.number);
   }
 
-  function playerStats(playerName) {
-    // create convenient alias
-    let game = gameObject();
-  
-    for (let team in game) {
-      let players = game[team]['players'];
-      // iterate over players object
-      for (let player in players) {
-        // if current player name equals input
-        if (player === playerName) {
-          // return player stats object
-          return players[player];
-        }
-      }
-    }  
+  function playerStats(playerInput) {
+    return players()[playerInput]
   }
 
-  function bigShoeRebounds() {
-    // create convenient alias
-    let game = gameObject();
-  
+  function bigShoeRebounds() {  
     // create comparison variable
     let largestShoe = 0;
     let resultRebounds = 0;
-  
-    for (let team in game) {
-      let players = game[team]['players'];
-      // iterate over players object
-      for (let player in players) {
-        let playerStatsObj = players[player]
-        // if current player's shoe size is bigger than largestShoe'
-        if (playerStatsObj.shoe > largestShoe) {
-          // set largest shoe equal to current player's shoe
-          largestShoe = playerStatsObj.shoe;
-          resultRebounds = playerStatsObj.rebounds;
-        }
+
+    // iterate over players object
+    for (let player in players()) {
+      // create convenient aliases
+      let shoe = players()[player].shoe;
+      let rebounds = players()[player].rebounds;
+      // if current player's shoe size is bigger than largestShoe'
+      if (shoe > largestShoe) {
+        // set largest shoe equal to current player's shoe
+        largestShoe = shoe;
+        return resultRebounds = rebounds;
       }
-    }  
-    return resultRebounds;
+    } 
   }

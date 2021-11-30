@@ -143,7 +143,7 @@ function gameObject() {
     return players()[playerInput].shoe;
   }
 
-  // MAKE CORRECTIONS **************
+  
   function teamColors(teamInput) {
     // create convenient alias
     const game = gameObject();
@@ -178,11 +178,13 @@ function gameObject() {
     let largestShoe = 0;
     let resultRebounds = 0;
 
+    const players = players();
+
     // iterate over players object
-    for (let player in players()) {
+    for (let player in players) {
       // create convenient aliases
-      let shoe = players()[player].shoe;
-      let rebounds = players()[player].rebounds;
+      let shoe = players[player].shoe;
+      let rebounds = players[player].rebounds;
       // if current player's shoe size is bigger than largestShoe'
       if (shoe > largestShoe) {
         // set largest shoe equal to current player's shoe
